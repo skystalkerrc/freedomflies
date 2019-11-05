@@ -78,8 +78,69 @@ class MyHorizonIndicator(GLCanvas):
 		glMatrixMode(GL_MODELVIEW)
 		glLoadIdentity()
 		glScalef(m_Scale_x, m_Scale_y, 1.0)
-		
-		
+
+	def glut_print(self, x,  y,  font,  text, r,  g , b , a = 1.0, scale = 1.0):
+		blending = False 
+		if glIsEnabled(GL_BLEND) :
+		    blending = True
+
+		#glEnable(GL_BLEND)
+		glColor3f(r,g,b)
+		glPushMatrix();
+		glTranslated(x,y,0)
+		glScalef(0.02*scale, 0.02*scale, 0);            
+
+		glLineWidth(a)
+		for ch in text :
+	    #         glutBitmapCharacter( font , ctypes.c_int( ord(ch) ) )
+		    glutStrokeCharacter( font , ctypes.c_int( ord(ch) ) )
+		if not blending :
+		    glDisable(GL_BLEND) 
+		glPopMatrix();
+
+def drawAttiMark(self):
+        glBegin(GL_LINES)
+        
+        #The dividing line between sky and ground
+        glVertex2f(-100,0)
+        glVertex2f(100,0) 
+        glEnd()
+               
+        pitch = 0
+	lineWidth = 1.0
+        while  pitch < 90:
+            self.glut_print( -25 , pitch*2+20 , GLUT_STROKE_ROMAN , str(pitch+10) , 1.0 , 1.0 , 1.0 , lineWidth*2 )
+            self.glut_print( 21 , pitch*2+20 , GLUT_STROKE_ROMAN , str(pitch+10) , 1.0 , 1.0 , 1.0 , lineWidth*2 )
+                       
+            self.glut_print( -27 , -pitch*2-20 , GLUT_STROKE_ROMAN , str(-pitch-10) , 1.0 , 1.0 , 1.0 , lineWidth*2 )
+            self.glut_print( 21 , -pitch*2-20 , GLUT_STROKE_ROMAN , str(-pitch-10) , 1.0 , 1.0 , 1.0 , lineWidth*2 ) 
+            glLineWidth(lineWidth)           
+            glBegin(GL_LINES)
+            # +2.5 degrees
+            glVertex2f(-5, pitch*2+5)
+            glVertex2f(5, pitch*2+5)
+            glVertex2f(-5, -pitch*2-5)
+            glVertex2f(5, -pitch*2-5)            
+            # +5.0 degrees
+            glVertex2f(-10,pitch*2+10)
+            glVertex2f(10,pitch*2+10)
+            glVertex2f(-10,-pitch*2-10)
+            glVertex2f(10,-pitch*2-10)            
+            # +7.5 degrees
+            glVertex2f(-5,pitch*2+15)
+            glVertex2f(5,pitch*2+15)
+            glVertex2f(-5,-pitch*2-15)
+            glVertex2f(5,-pitch*2-15)
+                        
+            # +10.0 degrees
+            glVertex2f(-20,pitch*2+20)
+            glVertex2f(20,pitch*2+20)           
+            glVertex2f(-20,-pitch*2-20)
+            glVertex2f(20,-pitch*2-20)
+            glEnd()
+                        
+            pitch += 10
+	
 	def OnDraw(self,event):
 		aCircle = circleEvaluator.CircleEvaluator()
 				
@@ -133,94 +194,7 @@ class MyHorizonIndicator(GLCanvas):
 		glLineWidth(1.0)
 		#The size for all pitch text
 		#m_pFontManager->SetSize(m_Font,4.0, 4.0)
-		
-		glBegin(GL_LINES)
-		
-		#The dividing line between sky and ground
-		glVertex2f(-100,0)
-		glVertex2f(100,0)
-		
-		# +2.5 degrees
-		glVertex2f(-5,5)
-		glVertex2f(5,5)
-		
-		# +5.0 degrees
-		glVertex2f(-10,10)
-		glVertex2f(10,10)
-		
-		# +7.5 degrees
-		glVertex2f(-5,15)
-		glVertex2f(5,15)
-		
-		# +10.0 degrees
-		glVertex2f(-20,20)
-		glVertex2f(20,20)
-		
-		# +12.5 degrees
-		glVertex2f(-5,25)
-		glVertex2f(5,25)
-		
-		# +15.0 degrees
-		glVertex2f(-10,30)
-		glVertex2f(10,30)
-		
-		# +17.5 degrees
-		glVertex2f(-5,35)
-		glVertex2f(5,35)
-		
-		# +20.0 degrees
-		glVertex2f(-20,40)
-		glVertex2f(20,40)
-		
-		# -2.5 degrees
-		glVertex2f(-5,-5)
-		glVertex2f(5,-5)
-		
-		# -5.0 degrees
-		glVertex2f(-10,-10)
-		glVertex2f(10,-10)
-		
-		# -7.5 degrees
-		glVertex2f(-5,-15)
-		glVertex2f(5,-15)
-		
-		# -10.0 degrees
-		glVertex2f(-20,-20)
-		glVertex2f(20,-20)
-		
-		# -12.5 degrees
-		glVertex2f(-5,-25)
-		glVertex2f(5,-25)
-		
-		# -15.0 degrees
-		glVertex2f(-10,-30)
-		glVertex2f(10,-30)
-		
-		# -17.5 degrees
-		glVertex2f(-5,-35)
-		glVertex2f(5,-35)
-		
-		# -20.0 degrees
-		glVertex2f(-20,-40)
-		glVertex2f(20,-40)
-		
-		glEnd()
-		
-		#### +10
-		###m_pFontManager->Print(-27.5,18.0,"10",m_Font)
-		###m_pFontManager->Print(21.0,18.0,"10",m_Font)
-		###
-		#### -10
-		###m_pFontManager->Print(-27.5,-22.0,"10",m_Font)
-		###m_pFontManager->Print(21.0,-22.0,"10",m_Font)
-		###
-		#### +20
-		###m_pFontManager->Print(-27.5,38.0,"20",m_Font)
-		###m_pFontManager->Print(21.0,38.0,"20",m_Font)
-		###
-		#### -20
-		###m_pFontManager->Print(-27.5,-42.0,"20",m_Font)
-		###m_pFontManager->Print(21.0,-42.0,"20",m_Font)
+		self.drawAttiMark() 
 		
 		#-----The background behind the bank angle markings-------
 		# Reset the modelview matrix
@@ -358,16 +332,20 @@ class MyHorizonIndicator(GLCanvas):
 		glBegin(GL_LINE_LOOP) # the bottom rectangle
 		glVertex2f(-4.5, 39.5)
 		glVertex2f(4.5, 39.5)
-		glVertex2f(4.5, 41.5)
-		glVertex2f(-4.5, 41.5)
+		glVertex2f(4.5, 42.5)
+		glVertex2f(-4.5, 42.5)
 		glEnd()
 		
 		glBegin(GL_LINE_STRIP) # the top triangle
-		glVertex2f(-4.5, 41.5)
+		glVertex2f(-4.5, 42.5)
 		glVertex2f(0, 46)
-		glVertex2f(4.5, 41.5)
+		glVertex2f(4.5, 42.5)
 		glEnd()
-		
+
+		if abs(int(Roll)) >= 10:
+		    self.glut_print( -1 , 40.05 , GLUT_STROKE_ROMAN , str(abs(int(Roll))) , 0 , 1.0 , 0 , 1.5 )  
+		else:
+		    self.glut_print( -1 , 40.05, GLUT_STROKE_ROMAN , '0' + str(abs(int(Roll))) , 0 , 1.0 , 0 , 1.5 ) 
 		#--------------End draw bank indicator------------
 		
 		#----------------Attitude Indicator----------------
